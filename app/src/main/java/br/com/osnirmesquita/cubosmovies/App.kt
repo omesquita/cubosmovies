@@ -1,10 +1,12 @@
+@file:Suppress("unused")
+
 package br.com.osnirmesquita.cubosmovies
 
 import android.app.Application
+import br.com.osnirmesquita.cubosmovies.di.networkModule
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
-
 
 class App : Application() {
 
@@ -15,7 +17,7 @@ class App : Application() {
             Timber.plant(DebugTree())
         }
         startKoin {
-
+            modules(networkModule)
         }
     }
 }
