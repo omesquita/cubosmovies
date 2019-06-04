@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import br.com.osnirmesquita.cubosmovies.BuildConfig
 import br.com.osnirmesquita.cubosmovies.R
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class MovieAdapter() : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+
+class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
     private var movies = listOf<MovieUI>()
 
@@ -31,7 +33,13 @@ class MovieAdapter() : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
         fun bind(movieUI: MovieUI) {
             with(itemView) {
                 tvTitleMovie.text = movieUI.title
-                Glide.with(itemView.context).load("https://image.tmdb.org/t/p/w500${movieUI.image}").into(ivMovie)
+
+                itemView.pbLoadMovie.indeterminateDrawable
+
+                Glide.with(itemView.context)
+                    .load("${BuildConfig.TMDB_IMG_URL}w342${movieUI.image}")
+
+                    .into(ivMovie)
             }
         }
     }
