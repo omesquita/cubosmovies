@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.osnirmesquita.cubosmovies.R
-import br.com.osnirmesquita.cubosmovies.data.TheMovieDbApi
+import br.com.osnirmesquita.cubosmovies.data.Api
 import br.com.osnirmesquita.cubosmovies.utils.GridItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,7 +16,7 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
-    private val api: TheMovieDbApi by inject()
+    private val api: Api by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

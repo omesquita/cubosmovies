@@ -1,7 +1,7 @@
 package br.com.osnirmesquita.cubosmovies.di
 
 import br.com.osnirmesquita.cubosmovies.BuildConfig
-import br.com.osnirmesquita.cubosmovies.data.TheMovieDbApi
+import br.com.osnirmesquita.cubosmovies.data.Api
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,7 +26,7 @@ val networkModule = module {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-            .create(TheMovieDbApi::class.java)
+            .create(Api::class.java)
     }
 
     /**
