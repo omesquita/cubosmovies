@@ -1,4 +1,4 @@
-package br.com.osnirmesquita.cubosmovies.features.main
+package br.com.osnirmesquita.cubosmovies.features.model
 
 class MovieUI(
     var id: Long,

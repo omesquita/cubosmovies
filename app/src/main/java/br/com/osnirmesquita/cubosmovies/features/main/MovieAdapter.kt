@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.osnirmesquita.cubosmovies.BuildConfig
 import br.com.osnirmesquita.cubosmovies.R
+import br.com.osnirmesquita.cubosmovies.features.model.MovieUI
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
-
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
@@ -38,7 +38,6 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
                 Glide.with(itemView.context)
                     .load("${BuildConfig.TMDB_IMG_URL}w342${movieUI.image}")
-
                     .into(ivMovie)
             }
         }
