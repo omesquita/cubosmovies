@@ -1,7 +1,7 @@
 package br.com.osnirmesquita.cubosmovies.di
 
 import br.com.osnirmesquita.cubosmovies.BuildConfig
-import br.com.osnirmesquita.cubosmovies.data.Api
+import br.com.osnirmesquita.cubosmovies.data.remote.Api
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
