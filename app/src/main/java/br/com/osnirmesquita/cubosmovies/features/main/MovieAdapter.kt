@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.osnirmesquita.cubosmovies.BuildConfig
 import br.com.osnirmesquita.cubosmovies.R
+import br.com.osnirmesquita.cubosmovies.features.model.Movie
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
-    private var movies = listOf<MovieUI>()
+    private var movies = listOf<Movie>()
 
     override fun getItemCount() = movies.size
 
@@ -24,13 +24,13 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
         holder.bind(movies[position])
     }
 
-    fun setMovies(moviesList: List<MovieUI>) {
+    fun setMovies(moviesList: List<Movie>) {
         movies = moviesList
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(movieUI: MovieUI) {
+        fun bind(movieUI: Movie) {
             with(itemView) {
                 tvTitleMovie.text = movieUI.title
 
@@ -38,7 +38,6 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
                 Glide.with(itemView.context)
                     .load("${BuildConfig.TMDB_IMG_URL}w342${movieUI.image}")
-
                     .into(ivMovie)
             }
         }

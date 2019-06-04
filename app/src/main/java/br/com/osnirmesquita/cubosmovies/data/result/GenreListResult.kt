@@ -7,6 +7,6 @@ data class GenreResult(
 )
 
 data class Genre(
-    @field:Json(name = "id") val id: String,
+    @field:Json(name = "id") val id: Int,
     @field:Json(name = "name") val name: String
 )

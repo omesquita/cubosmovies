@@ -12,7 +12,7 @@ interface Api {
      * Get a list of genres
      * */
     @GET("3/genre/movie/list")
-    fun getGenders(): Observable<GenreResult>
+    fun getGenres(): Observable<GenreResult>
 
     /**
      * Get a list movie sort by popularity and that is of the genre defined in params
