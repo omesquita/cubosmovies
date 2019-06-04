@@ -12,7 +12,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "MOVIEDB_API_KEY", CubosMoviesMovieDbApiKey)
+        buildConfigField("String", "TMDB_API_KEY", CubosMoviesMovieDbApiKey)
+        buildConfigField("String", "TMDB_API_URL", "\"https://api.themoviedb.org/\"")
+        buildConfigField("String", "TMDB_IMG_URL", "\"https://image.tmdb.org/t/p/\"")
     }
     buildTypes {
         release {

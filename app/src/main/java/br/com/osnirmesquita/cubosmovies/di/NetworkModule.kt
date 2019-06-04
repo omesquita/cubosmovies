@@ -12,8 +12,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-
-private const val BASE_URL = "https://api.themoviedb.org/"
 private const val CONNECT_TIME_OUT: Long = 15
 private const val READ_TIME_OUT: Long = 10
 
@@ -23,7 +21,7 @@ val networkModule = module {
      * */
     single {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.TMDB_API_URL)
             .client(get())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
@@ -63,7 +61,7 @@ private fun authInterceptor() = Interceptor {
 
     //add api_key parameter in the end url
     val url = originHttpUrl.newBuilder()
-        .addQueryParameter("api_key", BuildConfig.MOVIEDB_API_KEY)
+        .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
         .addQueryParameter("language", "pt-BR")
         .build()
 
