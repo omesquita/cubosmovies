@@ -3,8 +3,9 @@
 package br.com.osnirmesquita.cubosmovies
 
 import android.app.Application
-import br.com.osnirmesquita.cubosmovies.di.dataModule
+import br.com.osnirmesquita.cubosmovies.di.dataMapperModule
 import br.com.osnirmesquita.cubosmovies.di.networkModule
+import br.com.osnirmesquita.cubosmovies.di.repositoryModule
 import br.com.osnirmesquita.cubosmovies.di.viewModule
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -21,9 +22,10 @@ class App : Application() {
         startKoin {
             modules(
                 listOf(
-                    networkModule,
                     viewModule,
-                    dataModule
+                    networkModule,
+                    dataMapperModule,
+                    repositoryModule
                 )
             )
         }

@@ -9,23 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.osnirmesquita.cubosmovies.R
-import br.com.osnirmesquita.cubosmovies.data.remote.Api
-import br.com.osnirmesquita.cubosmovies.features.model.Movie
 import br.com.osnirmesquita.cubosmovies.utils.GridItemDecoration
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_movie_list.*
-import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class MoviesListFragment : Fragment() {
 
-    private val api: Api by inject()
     private var count = 1
     private lateinit var adapter: MovieAdapter
-    private var genreId = 0
-    private var moviesList = mutableListOf<Movie>()
+    private var genreId: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
@@ -34,14 +26,12 @@ class MoviesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        genreId = arguments?.getInt(ARG_GENRE_ID) ?: 0
+        genreId = arguments?.getLong(ARG_GENRE_ID) ?: 0
 
         adapter = MovieAdapter()
         rvMovies.layoutManager = GridLayoutManager(context, 2)
         rvMovies.addItemDecoration(GridItemDecoration(context!!, R.dimen.movie_item_offset))
         rvMovies.adapter = adapter
-
-        fetchMovies()
 
         rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -50,24 +40,11 @@ class MoviesListFragment : Fragment() {
 
                 if (!recyclerView.canScrollVertically(1)) {
                     count++
-                    fetchMovies()
                 }
             }
         })
     }
 
-    private fun fetchMovies() {
-        CompositeDisposable().add(
-            api.getMovies(count, genreId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    val result = it.result.map { movie -> Movie(movie.id, movie.title, movie.pathImage) }
-                    moviesList.addAll(result)
-                    adapter.setMovies(moviesList)
-                }, { Timber.e(it) })
-        )
-    }
 
     companion object {
         /**
@@ -81,10 +58,10 @@ class MoviesListFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(genreId: Int): MoviesListFragment {
+        fun newInstance(genreId: Long): MoviesListFragment {
             return MoviesListFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ARG_GENRE_ID, genreId)
+                    putLong(ARG_GENRE_ID, genreId)
                 }
             }
         }

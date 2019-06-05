@@ -1,7 +1,7 @@
 package br.com.osnirmesquita.cubosmovies.data.remote
 
-import br.com.osnirmesquita.cubosmovies.data.result.GenreResult
-import br.com.osnirmesquita.cubosmovies.data.result.MovieListResult
+import br.com.osnirmesquita.cubosmovies.data.remote.model.GenreDataResult
+import br.com.osnirmesquita.cubosmovies.data.remote.model.MovieDataResult
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -12,7 +12,7 @@ interface Api {
      * Get a list of genres
      * */
     @GET("3/genre/movie/list")
-    fun getGenres(): Observable<GenreResult>
+    fun getGenres(): Observable<GenreDataResult>
 
     /**
      * Get a list movie sort by popularity and that is of the genre defined in params
@@ -20,24 +20,24 @@ interface Api {
      * @param [page] page number to result
      * @param [genres] genre code
      *
-     * @return [MovieListResult]
+     * @return [MovieDataResult]
      * */
     @GET("3/discover/movie?sort_by=popularity.desc")
     fun getMovies(
         @Query("page") page: Int,
         @Query("with_genres") genres: Int
-    ): Observable<MovieListResult>
+    ): Observable<MovieDataResult>
 
     /**
      * Search a movie list
      * @param [page] page number to result
      * @param [query] a string with a query to search
      *
-     * @return [MovieListResult]
+     * @return [MovieDataResult]
      * */
     @GET("3/search/movie")
     fun searchMovies(
         @Query("page") page: Int,
         @Query("query") query: String
-    ): Observable<MovieListResult>
+    ): Observable<MovieDataResult>
 }

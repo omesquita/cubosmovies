@@ -1,11 +1,8 @@
-package br.com.osnirmesquita.cubosmovies.data
+package br.com.osnirmesquita.cubosmovies.data.repository
 
-import br.com.osnirmesquita.cubosmovies.data.result.Movie
+import br.com.osnirmesquita.cubosmovies.model.Movie
 import io.reactivex.Observable
 
-/**
- * Repository contract
- * */
 interface MovieRepository {
 
     fun getMovies(page: Int, genreId: Int): Observable<List<Movie>>

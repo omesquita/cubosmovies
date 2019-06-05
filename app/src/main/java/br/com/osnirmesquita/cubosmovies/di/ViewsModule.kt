@@ -1,6 +1,5 @@
 package br.com.osnirmesquita.cubosmovies.di
 
-import br.com.osnirmesquita.cubosmovies.features.model.Genre
 import org.koin.dsl.module
 
 
