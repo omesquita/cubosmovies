@@ -3,10 +3,7 @@
 package br.com.osnirmesquita.cubosmovies
 
 import android.app.Application
-import br.com.osnirmesquita.cubosmovies.di.dataMapperModule
-import br.com.osnirmesquita.cubosmovies.di.networkModule
-import br.com.osnirmesquita.cubosmovies.di.repositoryModule
-import br.com.osnirmesquita.cubosmovies.di.viewModule
+import br.com.osnirmesquita.cubosmovies.di.*
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -19,13 +16,16 @@ class App : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
+
+        Timber.d("StartApp")
         startKoin {
             modules(
                 listOf(
                     viewModule,
                     networkModule,
                     dataMapperModule,
-                    repositoryModule
+                    repositoryModule,
+                    presenterModule
                 )
             )
         }
