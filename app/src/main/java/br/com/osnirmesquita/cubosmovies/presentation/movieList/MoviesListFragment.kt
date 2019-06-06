@@ -1,4 +1,4 @@
-package br.com.osnirmesquita.cubosmovies.features.main
+package br.com.osnirmesquita.cubosmovies.presentation.movieList
 
 
 import android.os.Bundle
@@ -9,15 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.osnirmesquita.cubosmovies.R
+import br.com.osnirmesquita.cubosmovies.model.Movie
 import br.com.osnirmesquita.cubosmovies.utils.GridItemDecoration
 import kotlinx.android.synthetic.main.fragment_movie_list.*
-import timber.log.Timber
+import org.koin.android.ext.android.inject
 
-class MoviesListFragment : Fragment() {
+class MoviesListFragment : Fragment(), MovieListContract.View {
 
-    private var count = 1
+    private val presenter: MovieListContract.Presenter by inject()
     private lateinit var adapter: MovieAdapter
-    private var genreId: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_list, container, false)
@@ -25,26 +25,38 @@ class MoviesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.presenter.attachView(this)
 
-        genreId = arguments?.getLong(ARG_GENRE_ID) ?: 0
-
-        adapter = MovieAdapter()
         rvMovies.layoutManager = GridLayoutManager(context, 2)
         rvMovies.addItemDecoration(GridItemDecoration(context!!, R.dimen.movie_item_offset))
+        rvMovies.addOnScrollListener(endScrollListener())
+
+        this.adapter = MovieAdapter()
         rvMovies.adapter = adapter
 
-        rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                Timber.d("onScrollStateChanged($newState = ${recyclerView.canScrollVertically(1)})")
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    count++
-                }
-            }
-        })
+        this.presenter.start(arguments?.getInt(ARG_GENRE_ID) ?: 0)
     }
 
+    private fun endScrollListener() = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            /**
+             * When the list is scrolled to the end. Fetch more results.
+             * */
+            if (!recyclerView.canScrollVertically(1)) {
+                presenter.next()
+            }
+        }
+    }
+
+    override fun loadMovies(movies: List<Movie>) {
+        adapter.setMovies(movies)
+    }
+
+    override fun onDestroy() {
+        this.presenter.dettachView()
+        super.onDestroy()
+    }
 
     companion object {
         /**
@@ -61,7 +73,7 @@ class MoviesListFragment : Fragment() {
         fun newInstance(genreId: Long): MoviesListFragment {
             return MoviesListFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(ARG_GENRE_ID, genreId)
+                    putInt(ARG_GENRE_ID, genreId.toInt())
                 }
             }
         }

@@ -3,8 +3,8 @@ package br.com.osnirmesquita.cubosmovies.presentation.main
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import br.com.osnirmesquita.cubosmovies.features.main.MoviesListFragment
 import br.com.osnirmesquita.cubosmovies.model.Genre
+import br.com.osnirmesquita.cubosmovies.presentation.movieList.MoviesListFragment
 
 class GenrePageAdapter(genres: List<Genre>, fragmentManager: FragmentManager) :
     FragmentPagerAdapter(fragmentManager) {
@@ -16,7 +16,7 @@ class GenrePageAdapter(genres: List<Genre>, fragmentManager: FragmentManager) :
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return _genres.get(position).name
+        return _genres[position].name
     }
 
     override fun getItem(position: Int): Fragment {

@@ -1,4 +1,4 @@
-package br.com.osnirmesquita.cubosmovies.features.main
+package br.com.osnirmesquita.cubosmovies.presentation.movieList
 
 import android.view.LayoutInflater
 import android.view.View
