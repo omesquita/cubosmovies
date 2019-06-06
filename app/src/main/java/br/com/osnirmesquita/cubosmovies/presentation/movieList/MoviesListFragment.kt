@@ -79,7 +79,7 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
          */
         private const val ARG_GENRE_ID = "genre_id"
 
-        private const val ARG_MOVIE_ID = "movie_id"
+        const val ARG_MOVIE_ID = "movie_id"
 
         /**
          * Returns a new instance of this fragment for the given section
