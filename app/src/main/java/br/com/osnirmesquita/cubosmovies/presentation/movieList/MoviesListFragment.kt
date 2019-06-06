@@ -1,11 +1,12 @@
 package br.com.osnirmesquita.cubosmovies.presentation.movieList
 
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +16,9 @@ import br.com.osnirmesquita.cubosmovies.presentation.movieDetail.MovieDetailActi
 import br.com.osnirmesquita.cubosmovies.utils.GridItemDecoration
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 class MoviesListFragment : Fragment(), MovieListContract.View {
+
     private val presenter: MovieListContract.Presenter by inject()
     private lateinit var adapter: MovieAdapter
 
@@ -29,9 +30,11 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
         super.onViewCreated(view, savedInstanceState)
         this.presenter.attachView(this)
 
+        setHasOptionsMenu(true)
+
         rvMovies.layoutManager = GridLayoutManager(context, 2)
         rvMovies.addItemDecoration(GridItemDecoration(context!!, R.dimen.movie_item_offset))
-        rvMovies.addOnScrollListener(endScrollListener())
+        rvMovies.addOnScrollListener(endScrollListener)
 
         this.adapter = MovieAdapter()
         rvMovies.adapter = adapter
@@ -42,7 +45,47 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
         this.presenter.start(arguments?.getInt(ARG_GENRE_ID) ?: 0)
     }
 
-    private fun endScrollListener() = object : RecyclerView.OnScrollListener() {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main_activity, menu)
+
+        val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val menuItem = menu.findItem(R.id.action_search)
+        (menuItem.actionView as SearchView).apply {
+            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+            setOnQueryTextListener(searchListener)
+        }
+        menuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                presenter.closeSearch()
+                return true
+            }
+
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+
+                return true
+            }
+
+        })
+    }
+
+    /**
+     * Listener when the user click to sarch movie
+     * */
+    private val searchListener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String): Boolean {
+            presenter.search(query)
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            return false
+        }
+    }
+
+    /**
+     * Listen when the recycler view is scrolled
+     * */
+    private val endScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             /**

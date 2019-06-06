@@ -21,7 +21,6 @@ class App : Application() {
         startKoin {
             modules(
                 listOf(
-                    viewModule,
                     networkModule,
                     dataMapperModule,
                     repositoryModule,

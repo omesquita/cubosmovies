@@ -17,5 +17,9 @@ interface MovieListContract {
         fun start(genreId: Int)
 
         fun movieClicked(movie: Movie)
+
+        fun search(query: String)
+
+        fun closeSearch()
     }
 }

@@ -11,49 +11,95 @@ class MovieListPresenter(
     private val movieRepository: MovieRepository
 ) : BasePresenter<MovieListContract.View>(), MovieListContract.Presenter {
 
-    /**
-     * This is the number of currentPage of result. Always start in page 1
-     */
-    private var currentPage = 1
+    private var currentPage = 1 //This is the number of currentPage of result. Always start in page 1
+    private var genreId: Int = 0 //This is the identity of genre the movies to be fetched
+    private var modeSearch = false //Flag to indicate when it is movies searched
+    private var query: String = "" //Query to search movies
+    private var movies = mutableListOf<Movie>() //List of movies
 
     /**
-     * This is the identity of genre the movies to be fetched
+     * When start presenter, fetch movies and store genre to be searched
      * */
-    private var genreId: Int = 0
-
-    private val movies = mutableListOf<Movie>()
-
     override fun start(genreId: Int) {
         this.genreId = genreId
 
         this.fetchMovies()
     }
 
+    /**
+     * Fetch movies using the repository, tracker event when success and fail
+     * */
     private fun fetchMovies() {
         disposable.add(
             movieRepository.getMovies(currentPage, genreId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                    { sucess(it) },
-                    { faill(it) }
+                    { success(it) },
+                    { fail(it) }
                 )
         )
     }
 
-    private fun faill(it: Throwable?) {
-        Timber.e(it)
-    }
-
-    private fun sucess(movies: List<Movie>) {
+    private fun success(movies: List<Movie>) {
         this.movies.addAll(movies)
 
         getView().loadMovies(this.movies)
     }
 
-    override fun next() {
-        currentPage ++
+    private fun fail(ex: Throwable?) {
+        Timber.e(ex)
+    }
+
+    override fun search(query: String) {
+        this.modeSearch = true
+
+        if (this.query != query) {
+            this.query = query
+            clearParams()
+        }
+
+        fetchSearch()
+    }
+
+    /**
+     * Clear the params of current page and movie list
+     * */
+    private fun clearParams() {
+        this.currentPage = 1
+        this.movies = mutableListOf()
+    }
+
+    /**
+     * When search is closed reset params and fetch movies
+     * */
+    override fun closeSearch() {
+        modeSearch = false
+        query = ""
+        clearParams()
+
         fetchMovies()
+    }
+
+    private fun fetchSearch() {
+        this.disposable.add(
+            this.movieRepository.searchMovies(this.currentPage, this.query)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    { success(it) },
+                    { fail(it) }
+                )
+        )
+    }
+
+    override fun next() {
+        currentPage++
+        if (modeSearch) {
+            fetchSearch()
+        } else {
+            fetchMovies()
+        }
     }
 
     override fun movieClicked(movie: Movie) {
