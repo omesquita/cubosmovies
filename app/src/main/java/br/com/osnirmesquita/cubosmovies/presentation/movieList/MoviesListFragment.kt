@@ -1,6 +1,7 @@
 package br.com.osnirmesquita.cubosmovies.presentation.movieList
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.osnirmesquita.cubosmovies.R
 import br.com.osnirmesquita.cubosmovies.model.Movie
+import br.com.osnirmesquita.cubosmovies.presentation.movieDetail.MovieDetailActivity
 import br.com.osnirmesquita.cubosmovies.utils.GridItemDecoration
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 class MoviesListFragment : Fragment(), MovieListContract.View {
-
     private val presenter: MovieListContract.Presenter by inject()
     private lateinit var adapter: MovieAdapter
 
@@ -33,6 +35,9 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
 
         this.adapter = MovieAdapter()
         rvMovies.adapter = adapter
+        this.adapter.onItemClick = {
+            presenter.movieClicked(it)
+        }
 
         this.presenter.start(arguments?.getInt(ARG_GENRE_ID) ?: 0)
     }
@@ -49,8 +54,17 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
         }
     }
 
+    override fun showMovieDetail(movie: Movie) {
+        val intent = Intent(context, MovieDetailActivity::class.java)
+            .apply {
+                putExtra(ARG_MOVIE_ID, movie.id)
+            }
+
+        startActivity(intent)
+    }
+
     override fun loadMovies(movies: List<Movie>) {
-        adapter.setMovies(movies)
+        adapter.movies = movies
     }
 
     override fun onDestroy() {
@@ -64,6 +78,8 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
          * fragment.
          */
         private const val ARG_GENRE_ID = "genre_id"
+
+        private const val ARG_MOVIE_ID = "movie_id"
 
         /**
          * Returns a new instance of this fragment for the given section

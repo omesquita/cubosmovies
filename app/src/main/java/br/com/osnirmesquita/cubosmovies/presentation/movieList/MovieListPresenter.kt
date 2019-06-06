@@ -55,4 +55,8 @@ class MovieListPresenter(
         currentPage ++
         fetchMovies()
     }
+
+    override fun movieClicked(movie: Movie) {
+        getView().showMovieDetail(movie)
+    }
 }

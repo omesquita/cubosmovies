@@ -12,7 +12,13 @@ import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
-    private var movies = listOf<Movie>()
+    var movies = listOf<Movie>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var onItemClick: ((Movie) -> Unit)? = null
 
     override fun getItemCount() = movies.size
 
@@ -24,17 +30,14 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
         holder.bind(movies[position])
     }
 
-    fun setMovies(moviesList: List<Movie>) {
-        movies = moviesList
-        notifyDataSetChanged()
-    }
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(movie: Movie) {
             with(itemView) {
                 tvTitleMovie.text = movie.title
 
-                itemView.pbLoadMovie.indeterminateDrawable
+                itemView.setOnClickListener {
+                    onItemClick?.invoke(movies[adapterPosition])
+                }
 
                 Glide.with(itemView.context)
                     .load("${BuildConfig.TMDB_IMG_URL}w342${movie.poster}")

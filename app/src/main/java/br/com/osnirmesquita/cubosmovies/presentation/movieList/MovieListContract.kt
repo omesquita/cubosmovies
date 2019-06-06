@@ -7,11 +7,15 @@ interface MovieListContract {
 
     interface View : BaseContract.View {
         fun loadMovies(movies: List<Movie>)
+
+        fun showMovieDetail(movie: Movie)
     }
 
     interface Presenter : BaseContract.Presenter<View> {
         fun next()
 
         fun start(genreId: Int)
+
+        fun movieClicked(movie: Movie)
     }
 }
