@@ -49,6 +49,7 @@ class MovieListPresenter(
 
     private fun fail(ex: Throwable?) {
         Timber.e(ex)
+        getView().showFailSearch("Ocorreu um erro ao buscar os filmes")
     }
 
     override fun search(query: String) {

@@ -9,6 +9,8 @@ interface MovieListContract {
         fun loadMovies(movies: List<Movie>)
 
         fun showMovieDetail(movie: Movie)
+
+        fun showFailSearch(message: String)
     }
 
     interface Presenter : BaseContract.Presenter<View> {

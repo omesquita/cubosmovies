@@ -14,11 +14,13 @@ import br.com.osnirmesquita.cubosmovies.R
 import br.com.osnirmesquita.cubosmovies.model.Movie
 import br.com.osnirmesquita.cubosmovies.presentation.movieDetail.MovieDetailActivity
 import br.com.osnirmesquita.cubosmovies.utils.GridItemDecoration
+import br.com.osnirmesquita.cubosmovies.utils.extensions.displayToast
+import br.com.osnirmesquita.cubosmovies.utils.extensions.gone
+import br.com.osnirmesquita.cubosmovies.utils.extensions.visible
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import org.koin.android.ext.android.inject
 
 class MoviesListFragment : Fragment(), MovieListContract.View {
-
     private val presenter: MovieListContract.Presenter by inject()
     private lateinit var adapter: MovieAdapter
 
@@ -64,7 +66,6 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
 
                 return true
             }
-
         })
     }
 
@@ -113,6 +114,10 @@ class MoviesListFragment : Fragment(), MovieListContract.View {
     override fun onDestroy() {
         this.presenter.dettachView()
         super.onDestroy()
+    }
+
+    override fun showFailSearch(message: String) {
+        context?.displayToast(message)
     }
 
     companion object {
