@@ -6,6 +6,7 @@ import br.com.osnirmesquita.cubosmovies.data.remote.model.MovieDataResult
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Api {
@@ -49,6 +50,6 @@ interface Api {
      *
      * @return [MovieData]
      * */
-    @GET("3/movie")
-    fun getMovie(@Query("id") id: Int): Single<MovieData>
+    @GET("3/movie/{id}")
+    fun getMovie(@Path("id") id: Int): Single<MovieData>
 }
