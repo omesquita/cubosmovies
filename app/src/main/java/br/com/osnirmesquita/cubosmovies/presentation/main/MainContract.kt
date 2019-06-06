@@ -6,7 +6,7 @@ import br.com.osnirmesquita.cubosmovies.presentation.base.BaseContract
 interface MainContract {
 
     interface View : BaseContract.View {
-        fun setupTabs(genres: List<Genre>)
+        fun setUpTabs(genres: List<Genre>)
     }
 
     interface Presenter : BaseContract.Presenter<View> {

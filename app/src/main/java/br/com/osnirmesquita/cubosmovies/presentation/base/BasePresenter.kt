@@ -5,39 +5,23 @@ import timber.log.Timber
 
 abstract class BasePresenter<V : BaseContract.View> : BaseContract.Presenter<V> {
 
+    private var _view: V? = null
     protected val disposable = CompositeDisposable()
 
-    /**
-     * Store the view in the Presenter
-     * */
-    protected var view: V? = null
-        set(value) {
-            if (field == null) {
-                field = value
-            }
-        }
+    protected fun getView(): V {
+        return _view ?: throw  ViewNotAttachedException()
+    }
 
-    /**
-     * Attach view in the presenter
-     *
-     * @param [view] the View to be attached
-     * */
     override fun attachView(view: V) {
-        Timber.d("attachView(${view.javaClass.canonicalName})")
-        this.view = view
+        Timber.d("attachView()")
+        this._view = view
     }
 
-    /**
-     * Detach view of the presenter
-     * */
-    override fun detachView() {
-        Timber.d("detachView()")
-        this.view = null
-    }
-
-    override fun destroyView() {
-        Timber.d("destroyView()")
+    override fun dettachView() {
+        Timber.d("dettachView()")
         this.disposable.clear()
+        this._view = null
     }
 
+    class ViewNotAttachedException : RuntimeException()
 }

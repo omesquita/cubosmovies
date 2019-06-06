@@ -1,8 +1,9 @@
-package br.com.osnirmesquita.cubosmovies.features.main
+package br.com.osnirmesquita.cubosmovies.presentation.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import br.com.osnirmesquita.cubosmovies.features.main.MoviesListFragment
 import br.com.osnirmesquita.cubosmovies.model.Genre
 
 class GenrePageAdapter(genres: List<Genre>, fragmentManager: FragmentManager) :

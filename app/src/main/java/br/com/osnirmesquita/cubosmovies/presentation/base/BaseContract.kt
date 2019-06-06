@@ -4,12 +4,9 @@ interface BaseContract {
 
     interface View
 
-    interface Presenter<in T : View> {
+    interface Presenter<in V : View> {
+        fun attachView(view: V)
 
-        fun attachView(view: T)
-
-        fun destroyView()
-
-        fun detachView()
+        fun dettachView()
     }
 }
