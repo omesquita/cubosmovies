@@ -19,7 +19,7 @@ class MovieDataRepository(
     override fun getMovies(page: Int, genreId: Int): Observable<List<Movie>> {
         return api.getMovies(page, genreId)
             .map { result ->
-                result.result
+                result.results
                     .map { data -> mapper.mapFromData(data) }
             }
     }
@@ -27,7 +27,7 @@ class MovieDataRepository(
     override fun searchMovies(page: Int, query: String): Observable<List<Movie>> {
         return api.searchMovies(page, query)
             .map { result ->
-                result.result
+                result.results
                     .map { data -> mapper.mapFromData(data) }
             }
     }

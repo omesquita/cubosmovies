@@ -4,5 +4,5 @@ class MovieDataResult(
     val page: Int,
     val totalResults: Long,
     val totalPages: Long,
-    val result: List<MovieData>
+    val results: List<MovieData>
 )
