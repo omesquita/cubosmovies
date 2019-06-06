@@ -1,8 +1,10 @@
 package br.com.osnirmesquita.cubosmovies.data.remote
 
 import br.com.osnirmesquita.cubosmovies.data.remote.model.GenreDataResult
+import br.com.osnirmesquita.cubosmovies.data.remote.model.MovieData
 import br.com.osnirmesquita.cubosmovies.data.remote.model.MovieDataResult
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -40,4 +42,13 @@ interface Api {
         @Query("page") page: Int,
         @Query("query") query: String
     ): Observable<MovieDataResult>
+
+    /**
+     * Get a movie by a id
+     * @param [id] the identity movie
+     *
+     * @return [MovieData]
+     * */
+    @GET("3/movie")
+    fun getMovie(@Query("id") id: Int): Single<MovieData>
 }
